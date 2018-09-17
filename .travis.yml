@@ -6,12 +6,37 @@ after_success: if [ "$TRAVIS_OS_NAME" == "linux" ]; then Rscript -e 'covr::codec
 warnings_are_errors: yes
 before_deploy: if [ "$TRAVIS_OS_NAME" == "osx" ]; then rm -f *.tar.gz; fi
 r_check_args: --as-cran --install-args=--build
+
+# r_check_args: "--as-cran --install-args=--build"
+
+before_install:
+  - ulimit -n 2048
+  - export PROJ_DIR=`basename $PWD`    
+  - fname=travis_helpers.sh
+  - wget -O ${fname} http://bit.ly/travis_helpers
+  - cat ${fname}; source ${fname}; rm ${fname}  
+  - cat DESCRIPTION
+  - export PACKAGE_NAME=`package_name`  
+  - start_xvfb ;
+  - export rver=`r_version`;
+  - if [ "$TRAVIS_OS_NAME" = "osx" ];
+    then
+      no_open_mp ; 
+    fi
+  - poppler_install ; 
+
 deploy:
   provider: releases
   skip_cleanup: yes
+  api_key:
+    secure: Y+JfKm3oXRUxpxyWjBtXimuBcuv3+D5iakzCwMJLqEDPjd+w9ow1x5a4GN/LfFg8Lbhflc8Uaz2bpxRuD5enk+RRmFtcXBB/IsnxkXBEM3fA2eT4ZIxq/aTt4HisOdXclyZc5PxAXFOVO8/QWcjh3boqSpOjscS0kYCWkm4KT9M=  
   file_glob: yes
-  file: transcriptr*.t*gz
+  file: ${PACKAGE_NAME}*.t*gz
   'on':
     tags: yes
-    repo: muschellij2/transcriptr
+    repo: muschellij2/${PROJ_DIR}
+
+after_failure:
+  - cat ${PACKAGE_NAME}.Rcheck/00install.out
+  - cat ${PACKAGE_NAME}.Rcheck/00check.log
 
