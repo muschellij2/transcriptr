@@ -1,0 +1,39 @@
+---
+  output: github_document
+---
+
+```{r, include=FALSE}
+if (requireNamespace("git2r")) {
+  repo = git2r::repository(".")
+  url = git2r::remote_url(repo, remote = "origin") 
+  gh_user = basename(dirname(url))
+} else {
+  gh_user = "muschellij2"
+}
+```
+
+[![Travis build status](https://travis-ci.com/`r gh_user`/transcriptr.svg?branch=master)](https://travis-ci.com/`r gh_user`/transcriptr)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/`r gh_user`/transcriptr?branch=master&svg=true)](https://ci.appveyor.com/project/`r gh_user`/transcriptr)
+[![Coverage status](https://codecov.io/gh/`r gh_user`/transcriptr/branch/master/graph/badge.svg)](https://codecov.io/gh/`r gh_user`/transcriptr)
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+```
+# transcriptr Package: 
+The goal of `transcriptr` is to provide intends to give the ability to read structured
+    PDF files into data available for analysis and tabulation.  Currently
+    working for Johns Hopkins Transcripts
+
+## Installation
+
+You can install `transcriptr` from GitHub with:
+
+```
+# install.packages("remotes")
+remotes::install_github("`r gh_user`/transcriptr")
+```

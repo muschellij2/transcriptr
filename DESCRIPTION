@@ -10,8 +10,13 @@ Authors@R:
            comment = c(ORCID = "0000-0001-6469-1750"))
 Description: Intends to give the ability to read structured
     PDF files into data available for analysis and tabulation.  Currently
-    working for Johns Hopkins Transcripts
+    working for Johns Hopkins transcripts.
 License: GPL-3
+Imports:
+    dplyr,
+    tidyr,
+    pdftools,
+    zoo
 Suggests: 
     covr,
     knitr,
@@ -22,3 +27,4 @@ LazyData: true
 VignetteBuilder: knitr
 URL: https://github.com/muschellij2/transcriptr
 BugReports: https://github.com/muschellij2/transcriptr/issues
+RoxygenNote: 6.1.0
