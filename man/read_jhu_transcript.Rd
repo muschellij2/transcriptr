@@ -22,5 +22,7 @@ Read JHU Transcript
 }
 \examples{
 pdf_file = "~/Downloads/Transcript.pdf"
-res = read_jhu_transcript(pdf_file)
+if (file.exists(pdf_file)) {
+    res = read_jhu_transcript(pdf_file)
+}
 }

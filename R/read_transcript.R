@@ -12,11 +12,16 @@
 #' @importFrom zoo na.locf
 #' @examples
 #' pdf_file = "~/Downloads/Transcript.pdf"
-#' res = read_jhu_transcript(pdf_file)
+#' if (file.exists(pdf_file)) {
+#'     res = read_jhu_transcript(pdf_file)
+#' }
 read_jhu_transcript = function(pdf_file) {
   pdf_file = path.expand(pdf_file)
   pdf_file = normalizePath(pdf_file)
   res = pdf_text(pdf_file)
+
+  credits = blah = is_term = NULL
+  rm(list = c("credits", "blah", "is_term"))
   # dat = readPDF(
   #   control = list(text="-layout -fixed 4"),
   #   engine = "xpdf")(
@@ -92,6 +97,8 @@ read_jhu_transcript = function(pdf_file) {
     }
     advisor = ss[ seq(advisor_ind, award)]
     ss = ss[ -seq(advisor_ind, award)]
+  } else {
+    advisor = NULL
   }
 
   ss = data_frame(x = ss)
@@ -144,6 +151,10 @@ read_jhu_transcript = function(pdf_file) {
                          "Third" = "3",
                          "Fourth" = "4"),
            term = as.numeric(term))
+
+  if (!is.null(advisor)) {
+    attr(ss, "advisor_info") = advisor
+  }
 
   return(ss)
 
