@@ -1,6 +1,6 @@
 #' Read JHU Transcript
 #'
-#' @param pdf_file path to the filename
+#' @param file path to the filename
 #'
 #' @return A \code{data_frame} of the data
 #' @export
@@ -15,13 +15,13 @@
 #' if (file.exists(pdf_file)) {
 #'     res = read_jhu_transcript(pdf_file)
 #' }
-read_jhu_transcript = function(pdf_file) {
-  pdf_file = path.expand(pdf_file)
+read_jhu_transcript = function(file) {
+  pdf_file = path.expand(file)
   pdf_file = normalizePath(pdf_file)
   res = pdf_text(pdf_file)
 
-  credits = blah = is_term = NULL
-  rm(list = c("credits", "blah", "is_term"))
+  credits = blah = is_term = term = NULL
+  rm(list = c("credits", "blah", "is_term", "term"))
   # dat = readPDF(
   #   control = list(text="-layout -fixed 4"),
   #   engine = "xpdf")(
@@ -162,11 +162,12 @@ read_jhu_transcript = function(pdf_file) {
 
 #' @rdname read_jhu_transcript
 #' @param type Type of Transcript
+#' @param ... additional arguments to pass to reader function
 #' @export
-read_transcript = function(pdf_file, type = "jhu") {
+read_transcript = function(file, type = "jhu", ...) {
   type = match.arg(type)
   func = switch(type,
                 "jhu" = read_jhu_transcript
   )
-  func(pdf_file)
+  func(file, ...)
 }

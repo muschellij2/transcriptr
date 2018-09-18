@@ -5,14 +5,16 @@
 \alias{read_transcript}
 \title{Read JHU Transcript}
 \usage{
-read_jhu_transcript(pdf_file)
+read_jhu_transcript(file)
 
-read_transcript(pdf_file, type = "jhu")
+read_transcript(file, type = "jhu", ...)
 }
 \arguments{
-\item{pdf_file}{path to the filename}
+\item{file}{path to the filename}
 
 \item{type}{Type of Transcript}
+
+\item{...}{additional arguments to pass to reader function}
 }
 \value{
 A \code{data_frame} of the data
