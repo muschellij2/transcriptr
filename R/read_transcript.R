@@ -95,6 +95,7 @@ read_jhu_transcript = function(file) {
   stud_name = trimws(stud_name)
   stud_name = stud_name[ stud_name != "" ]
   stud_name = stud_name[1:2]
+  names(stud_name) = c("student_name", "student_id")
 
 
   ss = c(ss[,1], ss[,2])
