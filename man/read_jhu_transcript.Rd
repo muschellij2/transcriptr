@@ -23,8 +23,8 @@ A \code{data_frame} of the data
 Read JHU Transcript
 }
 \examples{
-pdf_file = "~/Downloads/Transcript.pdf"
-if (file.exists(pdf_file)) {
-    res = read_jhu_transcript(pdf_file)
+file = "~/Downloads/Transcript.pdf"
+if (file.exists(file)) {
+    res = read_jhu_transcript(file)
 }
 }

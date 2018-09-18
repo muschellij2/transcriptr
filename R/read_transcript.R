@@ -11,9 +11,9 @@
 #' @importFrom tidyr separate
 #' @importFrom zoo na.locf
 #' @examples
-#' pdf_file = "~/Downloads/Transcript.pdf"
-#' if (file.exists(pdf_file)) {
-#'     res = read_jhu_transcript(pdf_file)
+#' file = "~/Downloads/Transcript.pdf"
+#' if (file.exists(file)) {
+#'     res = read_jhu_transcript(file)
 #' }
 read_jhu_transcript = function(file) {
   pdf_file = path.expand(file)
@@ -48,30 +48,60 @@ read_jhu_transcript = function(file) {
     }
     stopifnot(length(start) == 1 && length(end) == 1)
     ind = seq(start + 1, end - 1)
-    x = x[ind]
+    l = list(data = x[ind], other = x[-ind])
+  })
+
+
+  other = lapply(res, function(x) {
+    x$other
+  })
+
+  res = lapply(res, function(x) {
+    x$data
   })
 
   width = 109
   r = res[[2]]
 
+  cutter = function(x){
+    nc = nchar(x)
+    x = c(substr(x, 1, min(width, nc)),
+          ifelse(nc > width + 1, substr(x, width + 1, nc),
+                 ""))
+    trimws(x)
+  }
   ss = sapply(res, function(r) {
-    r = sapply(r, function(x){
-      nc = nchar(x)
-      x = c(substr(x, 1, min(width, nc)),
-            ifelse(nc > width + 1, substr(x, width + 1, nc),
-                   ""))
-      trimws(x)
-    })
+    r = sapply(r, cutter)
+    r = t(r)
+  })
+
+  other = sapply(other, function(r) {
+    r = sapply(r, cutter)
     r = t(r)
   })
 
   ss = do.call(rbind, ss)
   rownames(ss) = NULL
 
+  other = do.call(rbind, other)
+  rownames(other) = NULL
+
+  other = c(other[,1], other[,2])
+  other = trimws(other)
+  other = other[ other != "" ]
+  stud_name = grep("student\\s+name", tolower(other))[1]
+  stud_name = other[stud_name + 1]
+  stud_name = strsplit(stud_name, split = "   ")[[1]]
+  stud_name = trimws(stud_name)
+  stud_name = stud_name[ stud_name != "" ]
+  stud_name = stud_name[1:2]
+
+
   ss = c(ss[,1], ss[,2])
   ss = trimws(ss)
 
   ss = ss[ ss != "" ]
+
 
   rem_ind = grepl("^GPA CRS", ss)
   if (any(rem_ind)) {
@@ -155,6 +185,7 @@ read_jhu_transcript = function(file) {
   if (!is.null(advisor)) {
     attr(ss, "advisor_info") = advisor
   }
+  attr(ss, "student_info") = stud_name
 
   return(ss)
 
