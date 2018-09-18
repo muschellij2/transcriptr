@@ -23,7 +23,7 @@ read_jhu_transcript = function(file) {
   credits = blah = is_term = term = NULL
   rm(list = c("credits", "blah", "is_term", "term"))
   # dat = readPDF(
-  #   control = list(text="-layout -fixed 4"),
+  #   control = list(text="-raw"),
   #   engine = "xpdf")(
   #     elem = list(uri = path.expand(pdf_file)),
   #     language="en", id="id1")
@@ -70,18 +70,49 @@ read_jhu_transcript = function(file) {
                  ""))
     trimws(x)
   }
-  ss = sapply(res, function(r) {
+
+  # widths = c(11, 40, 5, 10)
+  # cs = cumsum(widths)
+  # cutter2 = function(x){
+  #   x = trimws(x)
+  #   x = gsub("\\s+", " ", x)
+  #   nc = nchar(x)
+  #   x = c(
+  #     substr(x, 1, min(cs[1], nc)),
+  #     ifelse(nc >=  cs[2],
+  #            substr(x, cs[1] + 1, min(nc, cs[2])),
+  #            ""),
+  #     ifelse(nc >= cs[3],
+  #            substr(x, cs[2] + 1, min(nc, cs[3])),
+  #            ""),
+  #     ifelse(nc >= cs[4],
+  #            substr(x, cs[3] + 1, max(nc, cs[4])),
+  #            "")
+  #     )
+  #   trimws(x)
+  # }
+  #
+  # ss2 = lapply(res, function(r) {
+  #   r = sapply(r, cutter2)
+  #   r = t(r)
+  # })
+  # ss2 = do.call(rbind, ss2)
+  # rownames(ss2) = NULL
+
+  ss = lapply(res, function(r) {
     r = sapply(r, cutter)
     r = t(r)
   })
 
-  other = sapply(other, function(r) {
+  other = lapply(other, function(r) {
     r = sapply(r, cutter)
     r = t(r)
   })
 
   ss = do.call(rbind, ss)
   rownames(ss) = NULL
+
+
 
   other = do.call(rbind, other)
   rownames(other) = NULL
@@ -127,7 +158,9 @@ read_jhu_transcript = function(file) {
       award = length(ss)
     }
     advisor = ss[ seq(advisor_ind, award)]
-    ss = ss[ -seq(advisor_ind, award)]
+    # remove after award
+    # ss = ss[ -seq(advisor_ind, award)]
+    ss = ss[ -seq(advisor_ind, length(ss))]
   } else {
     advisor = NULL
   }
@@ -149,6 +182,13 @@ read_jhu_transcript = function(file) {
     r
   })
   lengths = sapply(x, length)
+  if (!all(lengths == 4)) {
+    warning("Not all data may be retrieved!")
+    message(ss[lengths != 4,])
+    x = x[ lengths == 4 ]
+    ss = ss[ lengths == 4, ]
+    lengths = sapply(x, length)
+  }
   stopifnot(all(lengths == 4))
 
   x = do.call("rbind", x)
@@ -192,6 +232,25 @@ read_jhu_transcript = function(file) {
 
 }
 
+
+# read_jhu_transcript2 = function(file) {
+#   pdf_file = path.expand(file)
+#   pdf_file = normalizePath(pdf_file)
+#
+#   credits = blah = is_term = term = NULL
+#   rm(list = c("credits", "blah", "is_term", "term"))
+#   dat = tm::readPDF(
+#     control = list(text="-raw"),
+#     engine = "xpdf")(
+#       elem = list(uri = path.expand(pdf_file)),
+#       language = "en", id = "id1")
+#   dat = c(as.character(dat))
+#   dat = dat[ !grepl("^[**]", dat) ]
+#   dat = dat[ !grepl("^GPA CRS", dat) ]
+#
+# }
+
+
 #' @rdname read_jhu_transcript
 #' @param type Type of Transcript
 #' @param ... additional arguments to pass to reader function
@@ -203,3 +262,4 @@ read_transcript = function(file, type = "jhu", ...) {
   )
   func(file, ...)
 }
+
