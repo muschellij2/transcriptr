@@ -257,8 +257,9 @@ read_jhu_transcript = function(file) {
 #' @export
 read_transcript = function(file, type = "jhu", ...) {
   type = match.arg(type)
-  func = switch(type,
-                "jhu" = read_jhu_transcript
+  func = switch(
+    type,
+    "jhu" = read_jhu_transcript
   )
   func(file, ...)
 }

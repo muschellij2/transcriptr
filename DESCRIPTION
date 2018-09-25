@@ -1,7 +1,7 @@
 Type: Package
 Package: transcriptr
 Title: Read Transcript PDF Files
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
     person(given = "John",
            family = "Muschelli",
