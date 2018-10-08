@@ -1,13 +1,14 @@
 #' Read JHU Transcript
 #'
 #' @param file path to the filename
+#' @param remove_withdrawn should remove withdrawn courses
 #'
 #' @return A \code{data_frame} of the data
 #' @export
 #'
 #' @importFrom pdftools pdf_text
 #' @importFrom dplyr mutate select filter recode bind_cols bind_rows
-#' @importFrom dplyr as_data_frame data_frame %>%
+#' @importFrom dplyr as_data_frame data_frame %>% first
 #' @importFrom tidyr separate
 #' @importFrom zoo na.locf
 #' @examples
@@ -15,13 +16,18 @@
 #' if (file.exists(file)) {
 #'     res = read_jhu_transcript(file)
 #' }
-read_jhu_transcript = function(file) {
+read_jhu_transcript = function(
+  file,
+  remove_withdrawn = TRUE) {
   pdf_file = path.expand(file)
   pdf_file = normalizePath(pdf_file)
   res = pdf_text(pdf_file)
 
   credits = blah = is_term = term = NULL
   rm(list = c("credits", "blah", "is_term", "term"))
+
+  grade = NULL
+  rm(list = c("grade"))
   # dat = readPDF(
   #   control = list(text="-raw"),
   #   engine = "xpdf")(
@@ -213,6 +219,11 @@ read_jhu_transcript = function(file) {
   term = as_data_frame(term)
   ss = bind_cols(ss, term)
 
+  grade = ss$grade
+  grade = strsplit(grade, split = " ")
+  grade = sapply(grade, dplyr::first)
+  ss$grade = grade
+
   ss = ss %>%
     separate(term, into = c("year", "term", "blah"), sep = " ") %>%
     select(-blah) %>%
@@ -222,6 +233,10 @@ read_jhu_transcript = function(file) {
                          "Third" = "3",
                          "Fourth" = "4"),
            term = as.numeric(term))
+  if (remove_withdrawn) {
+    ss = ss %>%
+      filter( !(grade %in% "W"))
+  }
 
   if (!is.null(advisor)) {
     attr(ss, "advisor_info") = advisor

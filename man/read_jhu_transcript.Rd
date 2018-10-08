@@ -5,12 +5,14 @@
 \alias{read_transcript}
 \title{Read JHU Transcript}
 \usage{
-read_jhu_transcript(file)
+read_jhu_transcript(file, remove_withdrawn = TRUE)
 
 read_transcript(file, type = "jhu", ...)
 }
 \arguments{
 \item{file}{path to the filename}
+
+\item{remove_withdrawn}{should remove withdrawn courses}
 
 \item{type}{Type of Transcript}
 
