@@ -1,7 +1,7 @@
 Type: Package
 Package: transcriptr
 Title: Read Transcript PDF Files
-Version: 0.3.2
+Version: 0.3.3
 Authors@R: 
     person(given = "John",
            family = "Muschelli",
@@ -16,7 +16,8 @@ Imports:
     dplyr,
     tidyr,
     pdftools,
-    zoo
+    zoo,
+    shiny
 Suggests: 
     covr,
     knitr,
@@ -27,4 +28,4 @@ LazyData: true
 VignetteBuilder: knitr
 URL: https://github.com/muschellij2/transcriptr
 BugReports: https://github.com/muschellij2/transcriptr/issues
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
