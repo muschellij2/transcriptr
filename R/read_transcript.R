@@ -164,6 +164,9 @@ read_jhu_transcript = function(
       award = length(ss)
     }
     advisor = ss[ seq(advisor_ind, award)]
+    advisor = advisor[ !grepl(
+      "^[*]+\\s*End.*Transcript\\s*[*]*[*]$",
+      advisor)]
     # remove after award
     # ss = ss[ -seq(advisor_ind, award)]
     ss = ss[ -seq(advisor_ind, length(ss))]
