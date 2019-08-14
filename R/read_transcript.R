@@ -3,12 +3,12 @@
 #' @param file path to the filename
 #' @param remove_withdrawn should remove withdrawn courses
 #'
-#' @return A \code{data_frame} of the data
+#' @return A \code{tibble} of the data
 #' @export
 #'
 #' @importFrom pdftools pdf_text
 #' @importFrom dplyr mutate select filter recode bind_cols bind_rows
-#' @importFrom dplyr as_data_frame data_frame %>% first
+#' @importFrom dplyr as_tibble tibble %>% first
 #' @importFrom tidyr separate
 #' @importFrom zoo na.locf
 #' @examples
@@ -67,7 +67,7 @@ read_jhu_transcript = function(
   })
 
   width = 109
-  r = res[[2]]
+  # r = res[[2]]
 
   cutter = function(x){
     nc = nchar(x)
@@ -171,13 +171,13 @@ read_jhu_transcript = function(
     advisor = NULL
   }
 
-  ss = data_frame(x = ss)
+  ss = dplyr::tibble(x = ss)
 
-  term_str = "^2\\d*-\\d* .* Term   "
+  term_str = "^2\\d*-\\d* .*(Winter|Summer|Term)   "
   ss = ss %>%
     mutate(is_term = grepl(term_str, x),
            term = ifelse(is_term, x, NA_character_),
-           term = na.locf(term, na.rm = FALSE)) %>%
+           term = zoo::na.locf(term, na.rm = FALSE)) %>%
     filter(!is_term) %>%
     select(-is_term)
 
@@ -202,7 +202,7 @@ read_jhu_transcript = function(
   colnames(x) = c("course_number", "course_title", "grade", "credits")
 
 
-  x = as_data_frame(x)
+  x = as_tibble(x)
   ss = bind_cols(ss, x)
   ss$x = NULL
   ss = ss %>%
@@ -216,7 +216,7 @@ read_jhu_transcript = function(
   term = t(term)
   colnames(term) = c("term", "program")
   ss$term = NULL
-  term = as_data_frame(term)
+  term = dplyr::as_tibble(term)
   ss = bind_cols(ss, term)
 
   grade = ss$grade

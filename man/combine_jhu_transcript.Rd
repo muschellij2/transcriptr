@@ -17,7 +17,7 @@ combine_transcript(file, type = "jhu", ...)
 \item{...}{additional arguments to pass to combining function}
 }
 \value{
-A \code{data_frame} of the data
+A \code{tibble} of the data
 }
 \description{
 Combine JHU Transcript

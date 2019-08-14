@@ -19,7 +19,7 @@ read_transcript(file, type = "jhu", ...)
 \item{...}{additional arguments to pass to reader function}
 }
 \value{
-A \code{data_frame} of the data
+A \code{tibble} of the data
 }
 \description{
 Read JHU Transcript

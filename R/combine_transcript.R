@@ -2,7 +2,7 @@
 #'
 #' @param file a vector of paths to PDFs
 #'
-#' @return A \code{data_frame} of the data
+#' @return A \code{tibble} of the data
 #' @export
 #'
 #' @examples
