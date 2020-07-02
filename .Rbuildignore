@@ -7,3 +7,4 @@
 ^transcriptr\.Rproj$
 ^\.Rproj\.user$
 ^.*\.Rproj$
+^inst/shiny-examples/validate_curriculum/rsconnect/.*

@@ -5,6 +5,7 @@
 #
 
 library(shiny)
+library(DT)
 library(transcriptr)
 library(dplyr)
 library(tidyr)
