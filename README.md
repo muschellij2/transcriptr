@@ -20,13 +20,36 @@ You can install `transcriptr` from GitHub with:
     # install.packages("remotes")
     remotes::install_github("muschellij2/transcriptr")
 
-## JHU Transcripts
+# JHU Transcripts
+
+## Students
 
 For the necessary input, please visit <https://sis.jhu.edu/sswf/>, log
 in and then go to Registration → My Grades, then click \[View Unofficial
-Transcript\]. This should download a `Transcript.pdf`. The
-`read_jhu_transcript` will read this in and give a `data.frame` of the
-parsed output.
+Transcript\]. This should download a `Transcript.pdf`.
+
+# Advisors
+
+If you are an advisor, you need to go to the Advisor Tab:
+
+<img src="man/figures/advisor.png" width="748" />
+
+then the Advisees List:
+
+<img src="man/figures/advisees.png" width="666" />
+
+then for an individual student, click Grades:
+
+<img src="man/figures/grades.png" width="560" />
+
+and then download the transcript by clicking View Unofficial Transcript:
+
+<img src="man/figures/transcript.png" width="410" />
+
+## Reading in the Transcript
+
+The `read_jhu_transcript` will read this in and give a `data.frame` of
+the parsed output.
 
 The Shiny app:
 <https://jhubiostatistics.shinyapps.io/validate_curriculum/> should also

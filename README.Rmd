@@ -38,8 +38,40 @@ You can install `transcriptr` from GitHub with:
 remotes::install_github("`r gh_user`/transcriptr")
 ```
 
-## JHU Transcripts
+# JHU Transcripts
 
-For the necessary input, please visit https://sis.jhu.edu/sswf/, log in and then go to Registration → My Grades, then click [View Unofficial Transcript].  This should download a `Transcript.pdf`.  The `read_jhu_transcript` will read this in and give a `data.frame` of the parsed output.  
+## Students
+
+For the necessary input, please visit https://sis.jhu.edu/sswf/, log in and then go to Registration → My Grades, then click [View Unofficial Transcript].  This should download a `Transcript.pdf`.  
+
+# Advisors
+If you are an advisor, you need to go to the Advisor Tab:
+
+```{r, echo = FALSE}
+knitr::include_graphics("man/figures/advisor.png")
+```
+
+then the Advisees List:
+
+```{r, echo = FALSE}
+knitr::include_graphics("man/figures/advisees.png")
+```
+
+then for an individual student, click Grades:
+
+```{r, echo = FALSE}
+knitr::include_graphics("man/figures/grades.png")
+```
+
+and then download the transcript by clicking View Unofficial Transcript:
+
+```{r, echo = FALSE}
+knitr::include_graphics("man/figures/transcript.png")
+```
+
+## Reading in the Transcript
+
+The `read_jhu_transcript` will read this in and give a `data.frame` of the parsed output.  
+
 
 The Shiny app: https://jhubiostatistics.shinyapps.io/validate_curriculum/ should also do this for you, allowing you to download a CSV of your data.  If you want the grades, you must check that box for the export.

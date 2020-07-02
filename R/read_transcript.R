@@ -23,8 +23,8 @@ read_jhu_transcript = function(
   pdf_file = normalizePath(pdf_file)
   res = pdf_text(pdf_file)
 
-  credits = blah = is_term = term = NULL
-  rm(list = c("credits", "blah", "is_term", "term"))
+  full_term_name = credits = blah = is_term = term = NULL
+  rm(list = c("credits", "blah", "is_term", "term", "full_term_name"))
 
   grade = NULL
   rm(list = c("grade"))
@@ -183,6 +183,8 @@ read_jhu_transcript = function(
            term = zoo::na.locf(term, na.rm = FALSE)) %>%
     filter(!is_term) %>%
     select(-is_term)
+  ss = ss[
+    !trimws(ss$x) %in% c("Intersession", "Institute", "Overview"),]
 
   x = strsplit(ss$x, split = "   ")
   x = lapply(x, function(r) {
@@ -228,11 +230,16 @@ read_jhu_transcript = function(
   ss$grade = grade
 
   ss = ss %>%
-    separate(term, into = c("year", "term", "blah"), sep = " ") %>%
+    dplyr::rename(full_term_name = term) %>%
+    separate(full_term_name, into = c("year", "term", "blah"), sep = " ",
+             extra = "merge", fill = "right",
+             remove = FALSE) %>%
     select(-blah) %>%
     mutate(term = recode(term,
+                         "Summer" = "0.5",
                          "First" = "1",
                          "Second" = "2",
+                         "Winter" = "2.5",
                          "Third" = "3",
                          "Fourth" = "4"),
            term = as.numeric(term))
